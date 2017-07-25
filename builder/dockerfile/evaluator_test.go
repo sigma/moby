@@ -187,7 +187,7 @@ func executeTestCase(t *testing.T, testCase dispatchTestCase) {
 		buildArgs: newBuildArgs(options.BuildArgs),
 	}
 
-	shlex := NewShellLex(parser.DefaultEscapeToken)
+	shlex := parser.NewShellLex(parser.DefaultEscapeToken)
 	n := result.AST
 	state := &dispatchState{runConfig: &container.Config{}}
 	opts := dispatchOptions{

@@ -258,7 +258,7 @@ func parseBuildStageName(args []string) (string, error) {
 // scratchImage is used as a token for the empty base image.
 var scratchImage builder.Image = &image.Image{}
 
-func (b *Builder) getFromImage(shlex *ShellLex, name string) (builder.Image, error) {
+func (b *Builder) getFromImage(shlex *parser.ShellLex, name string) (builder.Image, error) {
 	substitutionArgs := []string{}
 	for key, value := range b.buildArgs.GetAllMeta() {
 		substitutionArgs = append(substitutionArgs, key+"="+value)

@@ -67,7 +67,7 @@ type dispatchRequest struct {
 	attributes map[string]bool
 	flags      *BFlags
 	original   string
-	shlex      *ShellLex
+	shlex      *parser.ShellLex
 	state      *dispatchState
 	source     builder.Source
 }
@@ -181,7 +181,7 @@ type dispatchOptions struct {
 	state   *dispatchState
 	stepMsg string
 	node    *parser.Node
-	shlex   *ShellLex
+	shlex   *parser.ShellLex
 	source  builder.Source
 }
 
@@ -277,7 +277,7 @@ func getDispatchArgsFromNode(ast *parser.Node, processFunc processWordFunc, msg 
 
 type processWordFunc func(string) ([]string, error)
 
-func createProcessWordFunc(shlex *ShellLex, cmd string, envs []string) processWordFunc {
+func createProcessWordFunc(shlex *parser.ShellLex, cmd string, envs []string) processWordFunc {
 	switch {
 	case !replaceEnvAllowed[cmd]:
 		return func(word string) ([]string, error) {

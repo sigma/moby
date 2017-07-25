@@ -272,7 +272,7 @@ func emitImageID(aux *streamformatter.AuxFormatter, state *dispatchState) error 
 }
 
 func (b *Builder) dispatchDockerfileWithCancellation(dockerfile *parser.Result, source builder.Source) (*dispatchState, error) {
-	shlex := NewShellLex(dockerfile.EscapeToken)
+	shlex := parser.NewShellLex(dockerfile.EscapeToken)
 	state := newDispatchState()
 	total := len(dockerfile.AST.Children)
 	var err error
@@ -400,7 +400,7 @@ func checkDispatchDockerfile(dockerfile *parser.Node) error {
 }
 
 func dispatchFromDockerfile(b *Builder, result *parser.Result, dispatchState *dispatchState, source builder.Source) (*container.Config, error) {
-	shlex := NewShellLex(result.EscapeToken)
+	shlex := parser.NewShellLex(result.EscapeToken)
 	ast := result.AST
 	total := len(ast.Children)
 

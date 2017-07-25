@@ -43,7 +43,7 @@ func defaultDispatchReq(builder *Builder, args ...string) dispatchRequest {
 		builder: builder,
 		args:    args,
 		flags:   NewBFlags(),
-		shlex:   NewShellLex(parser.DefaultEscapeToken),
+		shlex:   parser.NewShellLex(parser.DefaultEscapeToken),
 		state:   &dispatchState{runConfig: &container.Config{}},
 	}
 }
