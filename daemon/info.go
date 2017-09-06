@@ -7,7 +7,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Sirupsen/logrus"
 	"github.com/docker/docker/api"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/cli/debug"
@@ -22,6 +21,7 @@ import (
 	"github.com/docker/docker/registry"
 	"github.com/docker/docker/volume/drivers"
 	"github.com/docker/go-connections/sockets"
+	"github.com/sirupsen/logrus"
 )
 
 // SystemInfo returns information about the host server the daemon is running on.
@@ -97,10 +97,10 @@ func (daemon *Daemon) SystemInfo() (*types.Info, error) {
 	drivers = strings.TrimSpace(drivers)
 	v := &types.Info{
 		ID:                 daemon.ID,
-		Containers:         int(cRunning + cPaused + cStopped),
-		ContainersRunning:  int(cRunning),
-		ContainersPaused:   int(cPaused),
-		ContainersStopped:  int(cStopped),
+		Containers:         cRunning + cPaused + cStopped,
+		ContainersRunning:  cRunning,
+		ContainersPaused:   cPaused,
+		ContainersStopped:  cStopped,
 		Images:             imageCount,
 		Driver:             drivers,
 		DriverStatus:       daemon.stores[p].layerStore.DriverStatus(),

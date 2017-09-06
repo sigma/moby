@@ -10,10 +10,10 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/Sirupsen/logrus"
 	containerd "github.com/containerd/containerd/api/grpc/types"
 	"github.com/docker/docker/pkg/idtools"
 	specs "github.com/opencontainers/runtime-spec/specs-go"
+	"github.com/sirupsen/logrus"
 	"golang.org/x/net/context"
 )
 
@@ -50,7 +50,7 @@ func (clnt *client) Create(containerID string, checkpoint string, checkpointDir 
 		return fmt.Errorf("Container %s is already active", containerID)
 	}
 
-	uid, gid, err := getRootIDs(specs.Spec(spec))
+	uid, gid, err := getRootIDs(spec)
 	if err != nil {
 		return err
 	}

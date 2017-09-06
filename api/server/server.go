@@ -2,19 +2,17 @@ package server
 
 import (
 	"crypto/tls"
-	"fmt"
 	"net"
 	"net/http"
 	"strings"
 
-	"github.com/Sirupsen/logrus"
-	"github.com/docker/docker/api/errors"
 	"github.com/docker/docker/api/server/httputils"
 	"github.com/docker/docker/api/server/middleware"
 	"github.com/docker/docker/api/server/router"
 	"github.com/docker/docker/api/server/router/debug"
 	"github.com/docker/docker/dockerversion"
 	"github.com/gorilla/mux"
+	"github.com/sirupsen/logrus"
 	"golang.org/x/net/context"
 )
 
@@ -158,6 +156,14 @@ func (s *Server) InitRouter(routers ...router.Router) {
 	}
 }
 
+type pageNotFoundError struct{}
+
+func (pageNotFoundError) Error() string {
+	return "page not found"
+}
+
+func (pageNotFoundError) NotFound() {}
+
 // createMux initializes the main router the server uses.
 func (s *Server) createMux() *mux.Router {
 	m := mux.NewRouter()
@@ -180,8 +186,7 @@ func (s *Server) createMux() *mux.Router {
 		m.Path("/debug" + r.Path()).Handler(f)
 	}
 
-	err := errors.NewRequestNotFoundError(fmt.Errorf("page not found"))
-	notFoundHandler := httputils.MakeErrorHandler(err)
+	notFoundHandler := httputils.MakeErrorHandler(pageNotFoundError{})
 	m.HandleFunc(versionMatcher+"/{path:.*}", notFoundHandler)
 	m.NotFoundHandler = notFoundHandler
 
